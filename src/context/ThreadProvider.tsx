@@ -1,9 +1,5 @@
 import type React from "react";
-import {
-  ThreadContext,
-  type ReplyType,
-  type ThreadType,
-} from "./ThreadContext";
+import { ThreadContext, type ThreadType } from "./ThreadContext";
 import { useState } from "react";
 import {
   getThreadById,
@@ -16,7 +12,6 @@ export function ThreadProvider({ children }: { children: React.ReactNode }) {
   const [thread, setThread] = useState<ThreadType[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [replies, setReplies] = useState<ReplyType[]>([]);
 
   const getThreadId = async (id: number) => {
     try {
@@ -62,7 +57,7 @@ export function ThreadProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
     }
   };
-  
+
   return (
     <ThreadContext.Provider
       value={{
