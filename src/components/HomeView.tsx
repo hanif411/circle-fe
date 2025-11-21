@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Threads from "./Threads";
 import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
@@ -8,6 +8,7 @@ import { postThread } from "@/services/api";
 import { useAuth } from "@/hooks/useAuth";
 import { useThreads } from "@/hooks/useThreads";
 import { Spinner } from "./ui/spinner";
+import { House, ImagePlus } from "lucide-react";
 
 function HomeView() {
   const [selectFile, setSelectFile] = useState<File | null>(null);
@@ -16,6 +17,7 @@ function HomeView() {
   const { user } = useAuth();
   const { loading, error } = useThreads();
   const [isPosting, setIsPosting] = useState(false);
+  const input = useRef<HTMLInputElement>(null);
 
   const handleSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === null) {
@@ -49,11 +51,14 @@ function HomeView() {
   };
   return (
     <main className=" w-full p-10">
-      <h1>Home</h1>
+      <h1 className="flex gap-2 mb-2">
+        <House />
+        Home
+      </h1>
       {error && <p>{error}</p>}
       {loading && <Spinner className="w-20 h-20 items-center" />}
       {user && (
-        <div className="flex w-full gap-4 m-4 ">
+        <div className="flex w-full gap-4 p-4 border">
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild className="h-15 w-full">
               <button className="w-full">
@@ -63,8 +68,8 @@ function HomeView() {
                     alt=""
                     className="w-8 h-8 rounded-full "
                   />
-                  <div className="flex justify-end">
-                    <p className="text-center">What Happening?!</p>
+                  <div className="flex justify-end items-center">
+                    <p className="text-center mr-70">What Happening?!</p>
                     <p className="inline-flex items-center justify-center h-7 p-2 bg-primary text-primary-foreground rounded-md">
                       Post
                     </p>
@@ -94,11 +99,13 @@ function HomeView() {
                     />
                   </div>
                 </div>
-                <div className="flex mt-4 justify-between">
+                <div className="flex mt-4 justify-end items-center gap-4">
+                  <ImagePlus onClick={() => input.current?.click()} />
                   <Input
                     type="file"
                     onChange={handleSelectFile}
-                    className="mr-50"
+                    className="mr-50 hidden"
+                    ref={input}
                   />
                   <Button type="submit" disabled={isPosting}>
                     {isPosting ? <Spinner /> : "Post"}

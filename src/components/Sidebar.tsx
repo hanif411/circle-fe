@@ -8,12 +8,13 @@ function Sidebar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    
     logout();
     navigate("/login");
   };
 
   return (
-    <div className="flex flex-col px-10 pb-10 h-screen justify-between">
+    <div className="flex flex-col px-10 pb-10 h-screen justify-between fixed">
       <div className="flex flex-col gap-6">
         <h1 className="text-4xl text-green-600">circle</h1>
         <div className="flex gap-2">

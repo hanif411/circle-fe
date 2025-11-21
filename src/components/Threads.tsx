@@ -1,54 +1,47 @@
-import type { ThreadType } from "@/context/ThreadContext";
 import { useEffect, useState } from "react";
 import { Heart, MessageCircleMore } from "lucide-react";
 import { useThreads } from "@/hooks/useThreads";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 function Threads() {
-  const [thread, setThread] = useState<ThreadType[]>([]);
-  const { getThreads } = useThreads();
   const navigate = useNavigate();
+  const { getThreads, createLike, thread: allThreads } = useThreads();
+  const { user } = useAuth();
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const result = async () => {
-      try {
-        const result = await getThreads();
-        setThread(result as ThreadType[]);
-        console.log(result);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  useEffect(() => {}, [user]);
 
-    result();
+  const handleLike = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    threadId: number
+  ) => {
+    e.stopPropagation();
+    e.preventDefault();
 
-    const ws = new WebSocket("ws://localhost:3000");
-    try {
-      ws.onopen = () => {
-        console.log("connect to web socket");
-      };
-      ws.onmessage = (event) => {
-        const newthread = JSON.parse(event.data.toString());
-        if (newthread && newthread.id) {
-          console.log(newthread.id);
-          setThread((prev) => [newthread as ThreadType, ...prev]);
-        } else {
-          console.warn("WebSocket: Received new Thread", newthread);
-        }
-      };
-    } catch (error) {
-      console.error("WebSocket: Error processing received message:", error);
+    if (!user) {
+      setError("Kalu belom login jadi tidak bisa like");
+      return;
     }
-    return () => {
-      if (ws.readyState === ws.OPEN) {
-        ws.close();
-      }
+
+    const dataLike = {
+      tweet_id: threadId,
     };
-  }, []);
+
+    try {
+      const result = await createLike(dataLike);
+
+      if (result) {
+        getThreads();
+      }
+    } catch (error) {
+      setError("invalid like");
+    }
+  };
 
   return (
     <div className="flex flex-col gap-2">
-      {thread?.map((t) => {
+      {allThreads?.map((t) => {
         return (
           <div
             className=" flex flex-col border p-5 gap-2"
@@ -65,14 +58,24 @@ function Threads() {
                 />
               )}
               <h1>{t.user.name}</h1>
-              <p className=" text-gray-500">@{t.user.username}</p>
+              {t.user.username && (
+                <p className=" text-gray-500">@{t.user.username}</p>
+              )}
             </div>
             <div>
               <h1 className="">{t.content}</h1>
               {t.image && <img src={t.image}></img>}
             </div>
+            {error && <p>{error}</p>}
             <div className="flex gap-4">
-              <Heart />
+              <button onClick={(e) => handleLike(e, t.id)} type="button">
+                <Heart
+                  style={{
+                    fill: t.islike ? "red" : "none",
+                    stroke: t.islike ? "red" : "currentColor",
+                  }}
+                />
+              </button>
               <h1>{t.likes}</h1>
               <MessageCircleMore />
               <h1>{t.replies} Replies</h1>
