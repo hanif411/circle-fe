@@ -1,4 +1,4 @@
-import HomeView from "@/components/HomeView";
+import HomeView from "@/layouts/HomeView";
 import Profile from "@/components/Profile";
 import Sidebar from "@/components/Sidebar";
 

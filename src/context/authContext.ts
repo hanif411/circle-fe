@@ -1,4 +1,4 @@
-import type { LoginType, RegisterType } from "@/services/api";
+import type { LoginType, RegisterType } from "@/types/types";
 import { createContext } from "react";
 
 export interface User {
@@ -8,6 +8,7 @@ export interface User {
   token: string;
   name: string;
   bio: string;
+  avatar: string;
   username: string;
   followers: number;
   following: number;

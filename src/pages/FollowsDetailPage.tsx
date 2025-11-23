@@ -1,15 +1,15 @@
-import ThreadDetail from "@/layouts/ThreadDetail";
 import Sidebar from "@/components/Sidebar";
 import Profile from "@/components/Profile";
+import FollowDetail from "@/layouts/FollowDetail";
 
-function ThreadDetailPage() {
+function FollowsDetailPage() {
   return (
     <div className="flex pt-5 ">
       <div className="w-1/5">
         <Sidebar />
       </div>
       <div className="w-4/7">
-        <ThreadDetail />
+        <FollowDetail />
       </div>
       <div className="w-2/7">
         <Profile />
@@ -18,4 +18,4 @@ function ThreadDetailPage() {
   );
 }
 
-export default ThreadDetailPage;
+export default FollowsDetailPage;

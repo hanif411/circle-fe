@@ -1,14 +1,19 @@
 import React, { useRef, useState } from "react";
 import Threads from "./Threads";
-import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import { postThread } from "@/services/api";
+import { Button } from "../components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import { useThreads } from "@/hooks/useThreads";
-import { Spinner } from "./ui/spinner";
+import { Spinner } from "../components/ui/spinner";
 import { House, ImagePlus } from "lucide-react";
+import { postThread } from "@/services/threads/api";
 
 function HomeView() {
   const [selectFile, setSelectFile] = useState<File | null>(null);
@@ -50,15 +55,15 @@ function HomeView() {
     }
   };
   return (
-    <main className=" w-full p-10">
-      <h1 className="flex gap-2 mb-2">
+    <main className=" w-full ">
+      <h1 className="flex gap-2 p-2 mb-2 border">
         <House />
         Home
       </h1>
       {error && <p>{error}</p>}
       {loading && <Spinner className="w-20 h-20 items-center" />}
       {user && (
-        <div className="flex w-full gap-4 p-4 border">
+        <div className="flex w-full gap-4 p-4 ">
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild className="h-15 w-full">
               <button className="w-full">
@@ -68,8 +73,10 @@ function HomeView() {
                     alt=""
                     className="w-8 h-8 rounded-full "
                   />
-                  <div className="flex justify-end items-center">
-                    <p className="text-center mr-70">What Happening?!</p>
+                  <div className="flex items-center w-full">
+                    <p className=" w-full">What Happening?!...</p>
+                    <p className="w-full"></p>
+                    <p className="w-full"></p>
                     <p className="inline-flex items-center justify-center h-7 p-2 bg-primary text-primary-foreground rounded-md">
                       Post
                     </p>

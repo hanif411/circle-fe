@@ -1,20 +1,17 @@
 import type React from "react";
-import {
-  ThreadContext,
-  type ReplyType,
-  type ThreadType,
-} from "./ThreadContext";
-import { useCallback, useEffect, useState } from "react";
-import {
-  getThreadById,
-  getAllThreads,
-  getRepliesByThreadId,
-  type QueryParams,
-  postReply,
-  type LikeType,
-} from "@/services/api";
-import { like } from "@/services/api";
+import { ThreadContext } from "./ThreadContext";
+import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
+import type {
+  LikeEventData,
+  LikeType,
+  QueryParams,
+  ReplyType,
+  ThreadType,
+} from "@/types/types";
+import { getAllThreads, getThreadById } from "@/services/threads/api";
+import { getRepliesByThreadId, postReply } from "@/services/reply/api";
+import { like } from "@/services/like/api";
 
 export function ThreadProvider({ children }: { children: React.ReactNode }) {
   const [thread, setThread] = useState<ThreadType[]>([]);
@@ -38,10 +35,38 @@ export function ThreadProvider({ children }: { children: React.ReactNode }) {
       }
     );
 
+    socket.on(
+      "like_update",
+      (eventData: { data: LikeEventData; message: string }) => {
+        console.log("like: Received new thread via Socket.IO.");
+        const { tweet_id, status } = eventData.data;
+        updateThreadLikeStatus(tweet_id, status);
+      }
+    );
+
     return () => {
       socket.disconnect();
     };
   }, []);
+
+  const updateThreadLikeStatus = (
+    threadId: number,
+    status: "like" | "unlike"
+  ) => {
+    setThread((prevThreads) =>
+      prevThreads.map((t) => {
+        if (t.id === threadId) {
+          const isLiking = status === "like";
+          return {
+            ...t,
+            likes: Math.max(0, t.likes! + (isLiking ? 1 : -1)),
+            islike: isLiking,
+          };
+        }
+        return t;
+      })
+    );
+  };
 
   const getThreadId = async (id: number) => {
     try {
@@ -109,6 +134,7 @@ export function ThreadProvider({ children }: { children: React.ReactNode }) {
     try {
       setLoading(true);
       const result = await like(data);
+
       return result;
     } catch (error) {
       setError("invalid like");

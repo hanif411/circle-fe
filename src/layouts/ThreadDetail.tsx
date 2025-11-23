@@ -1,21 +1,20 @@
-import type { ReplyType, ThreadType } from "@/context/ThreadContext";
 import { useThreads } from "@/hooks/useThreads";
-import {
-  CircleArrowLeft,
-  Heart,
-  ImagePlus,
-  MessageCircleMore,
-} from "lucide-react";
+import { CircleArrowLeft, Heart, ImagePlus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Spinner } from "./ui/spinner";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { Textarea } from "./ui/textarea";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Spinner } from "../components/ui/spinner";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
+import { Textarea } from "../components/ui/textarea";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import Replies from "./Replies";
-import type { QueryParams } from "@/services/api";
+import Replies from "../components/Replies";
+import type { QueryParams, ReplyType, ThreadType } from "@/types/types";
 
 function ThreadDetail() {
   const [thread, setThread] = useState<ThreadType | null>(null);
@@ -86,11 +85,11 @@ function ThreadDetail() {
   };
 
   return (
-    <div className="p-4">
-      <button className="flex gap-2 mb-2" onClick={() => navigate("/")}>
+    <div className="">
+      <button className="flex gap-2 mb-2 p-2" onClick={() => navigate("/")}>
         <CircleArrowLeft /> <p> Status</p>
       </button>
-      <div className="border p-4">
+      <div className=" p-4">
         <div className="flex gap-2 items-center">
           {thread?.user.profile_picture && (
             <img
@@ -101,7 +100,9 @@ function ThreadDetail() {
           )}
           <div>
             <p>{thread?.user.name}</p>
-            <h1 className="text-gray-500">@{thread?.user.username}</h1>
+            {thread?.user.username && (
+              <h1 className="text-gray-500">@{thread?.user.username}</h1>
+            )}
           </div>
         </div>
         <h1>{thread?.content}</h1>
@@ -109,26 +110,26 @@ function ThreadDetail() {
         <div className="flex gap-4 mt-5 text-gray-500">
           <Heart />
           <h1>{thread?.likes}</h1>
-          <MessageCircleMore />
-          <h1>{thread?.replies} Replies</h1>
         </div>
       </div>
 
       {error && <p>{error}</p>}
       {loading && <Spinner className="w-20 h-20 items-center" />}
       {user && (
-        <div className="flex w-full gap-4 px-4 border">
+        <div className="flex w-full gap-4 px-4">
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild className="h-15 w-full">
               <button className="w-full">
-                <div className="flex gap-4">
+                <div className="flex">
                   <img
                     src="https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png"
                     alt=""
                     className="w-8 h-8 rounded-full "
                   />
-                  <div className="flex justify-end items-center">
-                    <p className="text-center mr-85 ">Type Your Reply</p>
+                  <div className="flex w-full items-center">
+                    <p className="w-full">Type Your Reply</p>
+                    <p className="w-full"></p>
+                    <p className="w-full"></p>
                     <p className="inline-flex items-center justify-center h-7 p-2 bg-primary text-primary-foreground rounded-md">
                       Reply
                     </p>
@@ -173,6 +174,9 @@ function ThreadDetail() {
           </Dialog>
         </div>
       )}
+      <h1 className=" p-5">
+        Comments <span>{thread?.replies}</span>
+      </h1>
       <div>
         <Replies />
       </div>

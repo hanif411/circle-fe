@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Heart, MessageCircleMore } from "lucide-react";
 import { useThreads } from "@/hooks/useThreads";
 import { useNavigate } from "react-router-dom";
@@ -6,11 +6,11 @@ import { useAuth } from "@/hooks/useAuth";
 
 function Threads() {
   const navigate = useNavigate();
-  const { getThreads, createLike, thread: allThreads } = useThreads();
+  const { createLike, thread: allThreads } = useThreads();
+  console.log(allThreads);
+
   const { user } = useAuth();
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {}, [user]);
 
   const handleLike = async (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -30,10 +30,6 @@ function Threads() {
 
     try {
       const result = await createLike(dataLike);
-
-      if (result) {
-        getThreads();
-      }
     } catch (error) {
       setError("invalid like");
     }
@@ -44,12 +40,12 @@ function Threads() {
       {allThreads?.map((t) => {
         return (
           <div
-            className=" flex flex-col border p-5 gap-2"
+            className=" flex flex-col border-t p-5 gap-2"
             key={t.id}
             onClick={() => {
               navigate(`/thread/${t.id}`);
             }}>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center px-2">
               {t.user.profile_picture && (
                 <img
                   src={t.user.profile_picture}
@@ -63,11 +59,11 @@ function Threads() {
               )}
             </div>
             <div>
-              <h1 className="">{t.content}</h1>
-              {t.image && <img src={t.image}></img>}
+              {t.image && <img src={t.image} className="rounded-sm"></img>}
+              <h1 className="p-2">{t.content}</h1>
             </div>
             {error && <p>{error}</p>}
-            <div className="flex gap-4">
+            <div className="flex gap-4 px-2">
               <button onClick={(e) => handleLike(e, t.id)} type="button">
                 <Heart
                   style={{
