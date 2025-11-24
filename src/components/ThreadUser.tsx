@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Heart, MessageCircleMore } from "lucide-react";
 import { useThreads } from "@/hooks/useThreads";
 import { useAuth } from "@/hooks/useAuth";
-import type { LikeEventData, ThreadType } from "@/types/types";
+import type { ThreadType } from "@/types/types";
 import { getThreadByUser } from "@/services/threads/api";
 import { useNavigate } from "react-router-dom";
 
@@ -13,25 +13,6 @@ function ThreadUser() {
 
   const { user } = useAuth();
   const [error, setError] = useState<string | null>(null);
-
-  const updateThreadLikeStatus = (
-    threadId: number,
-    status: "like" | "unlike"
-  ) => {
-    setAllThreads((prevThreads) =>
-      prevThreads.map((t) => {
-        if (t.id === threadId) {
-          const isLiking = status === "like";
-          return {
-            ...t,
-            likes: Math.max(0, t.likes! + (isLiking ? 1 : -1)),
-            islike: isLiking,
-          };
-        }
-        return t;
-      })
-    );
-  };
 
   useEffect(() => {
     if (globalThreads.length > 0 && allThreads.length > 0) {

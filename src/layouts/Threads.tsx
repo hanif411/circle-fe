@@ -28,8 +28,7 @@ function Threads() {
       tweet_id: threadId,
     };
 
-    try {
-      const result = await createLike(dataLike);
+    try {await createLike(dataLike);
     } catch (error) {
       setError("invalid like");
     }

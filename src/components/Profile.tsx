@@ -1,5 +1,3 @@
-import { Button } from "./ui/button";
-import { useNavigate } from "react-router-dom";
 import Suggested from "./Suggested";
 import { CircleUserRound } from "lucide-react";
 import { useEffect, useState } from "react";

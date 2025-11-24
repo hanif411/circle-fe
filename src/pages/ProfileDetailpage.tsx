@@ -1,6 +1,4 @@
 import Sidebar from "@/components/Sidebar";
-import Profile from "@/components/Profile";
-import FollowDetail from "@/layouts/FollowDetail";
 import ProfileDetail from "@/layouts/ProfileDetail";
 import ProfileRight from "@/components/Suggested";
 
