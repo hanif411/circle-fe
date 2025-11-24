@@ -85,3 +85,52 @@ function Replies() {
 }
 
 export default Replies;
+
+// src/components/Replies.tsx (Menggantikan file Replies.tsx lama)
+
+// import { useThreads } from "@/hooks/useThreads";
+// import { useEffect, useState } from "react";
+// import { useParams } from "react-router-dom";
+// import { ReplyList } from "./ReplyList";
+// import type { ReplyType } from "@/types/types";
+
+// function Replies() {
+//   const [replies, setReplies] = useState<ReplyType[]>([]);
+//   const { getReplies } = useThreads();
+//   const { id } = useParams<{ id: string }>();
+
+//   // Pastikan ID ada dan valid sebelum parsing
+//   const thread_id = id ? parseInt(id, 10) : undefined;
+
+//   useEffect(() => {
+//     if (!thread_id) {
+//       console.error("Thread ID is missing or invalid.");
+//       return;
+//     }
+
+//     const fetchInitialReplies = async () => {
+//       const params = { thread_id };
+//       try {
+//         const result = await getReplies(params);
+//         setReplies(result);
+//       } catch (error) {
+//         console.error("Failed to fetch replies:", error);
+//       }
+//     };
+
+//     fetchInitialReplies();
+
+//     // NOTE: Logika Socket.IO untuk 'new_reply' harus dipindahkan ke ThreadProvider!
+//   }, [thread_id, getReplies]); // Tambahkan getReplies ke dependency array
+
+//   // Ini adalah contoh bagaimana tampilan akan menggunakan komponen ReplyList
+//   return (
+//     <>
+//       {/* Di sini kamu bisa menambahkan komponen input reply */}
+//       {/* ... */}
+//       <ReplyList replies={replies} />
+//     </>
+//   );
+// }
+
+// export default Replies;

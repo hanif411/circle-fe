@@ -4,11 +4,10 @@ import { useThreads } from "@/hooks/useThreads";
 import { useAuth } from "@/hooks/useAuth";
 import type { LikeEventData, ThreadType } from "@/types/types";
 import { getThreadByUser } from "@/services/threads/api";
-import { io, Socket } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 
 function ThreadUser() {
-  const { createLike } = useThreads();
+  const { createLike, thread: globalThreads } = useThreads();
   const navigate = useNavigate();
   const [allThreads, setAllThreads] = useState<ThreadType[]>([]);
 
@@ -35,21 +34,29 @@ function ThreadUser() {
   };
 
   useEffect(() => {
+    if (globalThreads.length > 0 && allThreads.length > 0) {
+      setAllThreads((prevThreads) =>
+        prevThreads.map((localT) => {
+          const globalT = globalThreads.find((gt) => gt.id === localT.id);
+          if (globalT) {
+            return {
+              ...localT,
+              likes: globalT.likes,
+              islike: globalT.islike,
+            };
+          }
+          return localT;
+        })
+      );
+    }
+  }, [globalThreads]);
+
+  useEffect(() => {
     const fetchThread = async () => {
       const result = await getThreadByUser();
       setAllThreads(result);
     };
     fetchThread();
-
-    const socket: Socket = io("http://localhost:3000");
-    socket.on(
-      "like_update",
-      (eventData: { data: LikeEventData; message: string }) => {
-        console.log("like: Received new thread via Socket.IO.");
-        const { tweet_id, status } = eventData.data;
-        updateThreadLikeStatus(tweet_id, status);
-      }
-    );
   }, []);
 
   const handleLike = async (

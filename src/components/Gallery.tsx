@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { getThreadByUser } from "@/services/threads/api";
 import type { ThreadType } from "@/types/types";

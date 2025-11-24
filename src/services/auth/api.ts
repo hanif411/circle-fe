@@ -1,7 +1,6 @@
 import type { LoginType, RegisterType } from "@/types/types";
 import axios from "axios";
 
-const token = localStorage.getItem("token");
 export interface Query {
   keyword: string;
 }
@@ -46,6 +45,7 @@ export async function loginUser(data: LoginType) {
 }
 
 export async function getusers() {
+  const token = localStorage.getItem("token");
   try {
     const response = await axios({
       method: "get",
@@ -76,5 +76,25 @@ export async function findUsers(queryparams: Query) {
     return response.data.data.users;
   } catch (error) {
     console.error(error);
+  }
+}
+
+export async function getUserById() {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios({
+      method: "get",
+      url: "http://localhost:3000/api/v1/auth/user",
+      withCredentials: true,
+      headers: {
+        token,
+      },
+    });
+    if (response.status === 200) {
+      console.log(response.data.data);
+      return response.data.data;
+    }
+  } catch (error) {
+    throw new Error("gagal get threads");
   }
 }

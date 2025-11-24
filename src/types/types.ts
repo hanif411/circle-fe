@@ -14,6 +14,9 @@ export interface LikeType {
   tweet_id: number;
 }
 
+export interface FollowType {
+  target_follow: number;
+}
 export interface UserType {
   id: number;
   username: string;
@@ -45,4 +48,10 @@ export interface likeReturn {
 export interface LikeEventData {
   tweet_id: number;
   status: "like" | "unlike";
+}
+
+export interface FollowReturn {
+  follower_id: number;
+  following_id: number;
+  isFollowing: boolean;
 }

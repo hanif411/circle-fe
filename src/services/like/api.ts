@@ -1,9 +1,9 @@
 import type { LikeType } from "@/types/types";
 import axios from "axios";
 
-const token = localStorage.getItem("token");
 
 export async function like(data: LikeType) {
+  const token = localStorage.getItem("token");
   try {
     const response = await axios({
       method: "post",

@@ -13,7 +13,7 @@ import { Textarea } from "../components/ui/textarea";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import Replies from "../components/Replies";
+import Replies from "../features/reply/components/Replies";
 import type { QueryParams, ReplyType, ThreadType } from "@/types/types";
 
 function ThreadDetail() {

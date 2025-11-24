@@ -18,13 +18,21 @@ function Sidebar() {
       <div className="flex flex-col gap-6">
         <h1 className="text-4xl text-green-600">circle</h1>
         <div className="flex gap-2">
-          <button onClick={() => navigate("/")} className="flex gap-2">
+          <button
+            onClick={(e) => {
+              e.preventDefault(), navigate("/");
+            }}
+            className="flex gap-2">
             <House />
             <h1>Home</h1>
           </button>
         </div>
         <div className="flex gap-2">
-          <button className="flex gap-2" onClick={() => navigate("/search")}>
+          <button
+            className="flex gap-2"
+            onClick={(e) => {
+              e.preventDefault(), navigate("/search");
+            }}>
             <UserRoundSearch />
             <h1>Search</h1>
           </button>

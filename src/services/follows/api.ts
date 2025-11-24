@@ -1,8 +1,8 @@
+import type { FollowType } from "@/types/types";
 import axios from "axios";
 
-const token = localStorage.getItem("token");
-
 export async function getFollowers() {
+  const token = localStorage.getItem("token");
   try {
     const response = await axios({
       method: "get",
@@ -15,7 +15,9 @@ export async function getFollowers() {
     return response.data.data.followers;
   } catch (error) {}
 }
+
 export async function getFollowings() {
+  const token = localStorage.getItem("token");
   try {
     const response = await axios({
       method: "get",
@@ -26,5 +28,22 @@ export async function getFollowings() {
       },
     });
     return response.data.data.followings;
+  } catch (error) {}
+}
+
+export async function followUnfollow(data: FollowType) {
+  const token = localStorage.getItem("token");
+
+  try {
+    const response = await axios({
+      method: "post",
+      url: "http://localhost:3000/api/v1/follows",
+      withCredentials: true,
+      data,
+      headers: {
+        token,
+      },
+    });
+    return response.data.data;
   } catch (error) {}
 }

@@ -1,26 +1,21 @@
-import type { User } from "@/context/authContext";
-import { useAuth } from "@/hooks/useAuth";
-import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
-import { getusers } from "@/services/auth/api";
 import Suggested from "./Suggested";
+import { CircleUserRound } from "lucide-react";
+import { useEffect, useState } from "react";
+import type { User } from "@/context/authContext";
+import { getUserById } from "@/services/auth/api";
+import EditProfile from "./EditProfile";
 
 function Profile() {
-  const { user } = useAuth();
-  const [users, setUsers] = useState<User[] | null>(null);
-  const navigate = useNavigate();
-  console.log(user);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const result = await getusers();
-      console.log(result);
-      setUsers(result);
-      return result;
+    const fetchUser = async () => {
+      const result = await getUserById();
+      setUser(result);
     };
-
-    fetchUsers();
+    fetchUser();
   }, [user]);
 
   return (
@@ -31,18 +26,22 @@ function Profile() {
             <div className=" p-4 flex flex-col gap-2">
               <h1>My Profile</h1>
               <div className="bg-cyan-300 w-full h-20 rounded-2xl flex">
-                <img
-                  className="w-20 h-20 mt-10 ms-5 rounded-full border-5 border-primary-foreground"
-                  src={user.avatar}
-                  alt=""
-                />
+                {user.avatar ? (
+                  <img
+                    className="w-20 h-20 mt-10 ms-5 rounded-full border-5 border-primary-foreground"
+                    src={user.avatar}
+                    alt=""
+                  />
+                ) : (
+                  <CircleUserRound
+                    className="w-30 h-30 mt-5 ms-5 rounded-full"
+                    style={{ stroke: "grey" }}
+                  />
+                )}
                 <p className="w-full"></p>
-                <Button
-                  variant={"outline"}
-                  className="mt-25 border-white rounded-xl min-w-fit"
-                  onClick={() => navigate("/profile")}>
-                  Edit Profile
-                </Button>
+                <div className="mt-25 mr-3">
+                  <EditProfile />
+                </div>
               </div>
               <h1 className="mt-10 text-2xl font-bold"> {user.name}</h1>
               {user.username && (

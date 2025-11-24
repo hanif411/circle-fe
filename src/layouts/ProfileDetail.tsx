@@ -1,15 +1,24 @@
-import { useAuth } from "@/hooks/useAuth";
 import ThreadUser from "../components/ThreadUser";
 import { useEffect, useState } from "react";
 import Gallery from "@/components/Gallery";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { Underline } from "lucide-react";
+import { CircleUserRound } from "lucide-react";
+import type { User } from "@/context/authContext";
+import { getUserById } from "@/services/auth/api";
+import EditProfile from "@/components/EditProfile";
 
 function ProfileDetail() {
-  const { user } = useAuth();
-  const [threads, setThreads] = useState<boolean>(false);
-  const [gallery, setGallery] = useState<boolean>(true);
+  const [user, setUser] = useState<User>();
+  const [threads, setThreads] = useState<boolean>(true);
+  const [gallery, setGallery] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const result = await getUserById();
+      setUser(result);
+    };
+    fetchUser();
+  }, [user]);
 
   return (
     <div className="flex gap-2 flex-col">
@@ -18,15 +27,22 @@ function ProfileDetail() {
           <div className=" p-4 flex flex-col gap-2">
             <h1 className="text-2xl font-bold">My Profile</h1>
             <div className="bg-cyan-300 w-full h-30 rounded-2xl flex">
-              <img
-                className="w-30 h-30 mt-15 ms-5 rounded-full border-5 border-primary-foreground"
-                src={user.avatar}
-                alt=""
-              />
+              {user.avatar ? (
+                <img
+                  className="w-30 h-30 mt-15 ms-5 rounded-full border-5 border-primary-foreground"
+                  src={user.avatar}
+                  alt=""
+                />
+              ) : (
+                <CircleUserRound
+                  className="w-30 h-30 mt-15 ms-5 rounded-full border-primary-foreground"
+                  style={{ stroke: "grey" }}
+                />
+              )}
               <p className="w-full"></p>
-              <button className="mt-35 bg-amber-300 rounded-xl mr-10 min-w-fit">
-                Edit Profile
-              </button>
+              <div className="mt-35 mr-5">
+                <EditProfile />
+              </div>
             </div>
             <h1 className="mt-15 text-2xl font-bold"> {user.name}</h1>
             {user.username && <p className="text-gray-500">@{user.username}</p>}

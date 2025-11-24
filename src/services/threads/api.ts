@@ -1,7 +1,8 @@
 import axios from "axios";
-const token = localStorage.getItem("token");
 
 export async function getThreadByUser() {
+  const token = localStorage.getItem("token");
+
   try {
     const response = await axios.get(
       "http://localhost:3000/api/v1/thread/user",
@@ -37,8 +38,14 @@ export async function getThreadById(id: number) {
 }
 
 export async function getAllThreads() {
+  const token = localStorage.getItem("token");
+
   try {
-    const response = await axios.get("http://localhost:3000/api/v1/thread");
+    const response = await axios.get("http://localhost:3000/api/v1/thread", {
+      headers: {
+        token: token ? token : null,
+      },
+    });
     if (response.status === 200) {
       console.log(response.data.data.threads);
       return response.data.data.threads;

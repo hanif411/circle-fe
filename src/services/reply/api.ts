@@ -1,8 +1,6 @@
 import type { QueryParams } from "@/types/types";
 import axios from "axios";
 
-const token = localStorage.getItem("token");
-
 export async function getRepliesByThreadId(queryparams: QueryParams) {
   const params = queryparams;
   try {
@@ -21,6 +19,8 @@ export async function getRepliesByThreadId(queryparams: QueryParams) {
 
 export async function postReply(queryparams: QueryParams, formdata: FormData) {
   const params = queryparams;
+  const token = localStorage.getItem("token");
+
   try {
     const response = await axios({
       method: "post",
