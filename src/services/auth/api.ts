@@ -58,7 +58,6 @@ export async function findUsers(queryparams: Query) {
 }
 
 export async function getUserByLogin() {
-  const token = localStorage.getItem("token");
   try {
     const response = await api.get("/auth/user")
     if (response.status === 200) {

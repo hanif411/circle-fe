@@ -1,6 +1,5 @@
 import type { QueryParams } from "@/types/types";
 import api from "../api";
-import { data } from "react-router-dom";
 
 export async function getRepliesByThreadId(queryparams: QueryParams) {
   try {
