@@ -4,13 +4,17 @@ import type { User } from "@/context/authContext";
 import { findUsers } from "@/services/auth/api";
 import { Search } from "lucide-react";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function SearchDetail() {
   const [users, setUsers] = useState<User[]>([]);
   const [keyword, setKeyword] = useState<string>();
+  const [hasSearched, setHasSearched] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setHasSearched(true);
     const queryParams = {
       keyword: keyword!,
     };
@@ -39,7 +43,8 @@ function SearchDetail() {
           </form>
         </div>
         <div>
-          {users?.map((f) => {
+          {users.length === 0 && hasSearched && <p>user tidak ditemukan</p>}
+          {users.map((f) => {
             return (
               <>
                 <div className="flex items-center gap-1 my-2">
@@ -53,9 +58,11 @@ function SearchDetail() {
                     <p className="text-gray-500">@{f.username}</p>
                     <p>{f.bio}</p>
                   </div>
-                  <p className="border-2 rounded-xl p-1 px-3 border-white">
-                    Follow
-                  </p>
+                  <Button
+                    className="border-2 rounded-xl p-1 px-3 border-white"
+                    onClick={() => navigate(`/profile/${f.id}`)}>
+                    See
+                  </Button>
                 </div>
               </>
             );

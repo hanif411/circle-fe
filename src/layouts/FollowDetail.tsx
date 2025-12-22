@@ -8,6 +8,7 @@ import {
 } from "@/services/follows/api";
 import { io, Socket } from "socket.io-client";
 import { useCallback, useEffect, useState } from "react";
+import Suggested from "@/components/Suggested";
 
 function FollowDetail() {
   const { user } = useAuth();
@@ -32,10 +33,13 @@ function FollowDetail() {
     const updateFollow = (event: {
       data: { follower_id: number; following_id: number; isFollowing: boolean };
     }) => {
-      const { follower_id, following_id } = event.data;
+      const { follower_id, following_id, isFollowing } = event.data;
 
-      if (follower_id === user?.id || following_id === user?.id) {
+      if (follower_id === user?.id) {
         fetchFollowers();
+      }
+
+      if (following_id === user?.id) {
         fetchFollowings();
       }
     };
@@ -79,86 +83,92 @@ function FollowDetail() {
 
   return (
     <>
-      <div className="p-5 flex gap-2 flex-col">
-        <div className="flex">
-          <Button
-            variant={"link"}
-            className={`w-1/2 text-center text-xl ${
-              follower ? "border-b-2 border-primary" : ""
-            }`}
-            onClick={() => {
-              setFollower(true), setFollowing(false);
-            }}>
-            Followers
-          </Button>
-          <Button
-            variant={"link"}
-            className={`w-1/2 text-center text-xl ${
-              following ? "border-b-2 border-primary" : ""
-            }`}
-            onClick={() => {
-              setFollowing(true), setFollower(false);
-            }}>
-            Following
-          </Button>
-        </div>
-        {follower && (
-          <div>
-            {followers?.map((f) => {
-              const isMeFollowingThem = followings.some((u) => u.id === f.id);
-              return (
-                <>
-                  <div className="flex items-center gap-1 my-2">
-                    <img
-                      className="w-15 h-15 rounded-full border-5 border-primary-foreground"
-                      src={f.avatar}
-                      alt=""
-                    />
-                    <div className="flex flex-col w-full">
-                      <p className=" w-full">{f.name}</p>
-                      <p className="text-gray-500">@{f.username}</p>
-                      <p>{f.bio}</p>
-                    </div>
-                    <p className="border-2 rounded-xl p-1 px-3 border-white">
-                      <Button onClick={(e) => handleFollowUnfollow(e, f.id, f)}>
-                        {isMeFollowingThem ? "Following" : "Follow"}
-                      </Button>
-                    </p>
-                  </div>
-                </>
-              );
-            })}
-          </div>
-        )}
+      {!user && <Suggested />}
 
-        {following && (
-          <div>
-            {followings?.map((f) => {
-              return (
-                <>
-                  <div className="flex items-center gap-1 my-2">
-                    <img
-                      className="w-15 h-15 rounded-full border-5 border-primary-foreground"
-                      src={f.avatar}
-                      alt=""
-                    />
-                    <div className="flex flex-col w-full">
-                      <p className=" w-full">{f.name}</p>
-                      <p className="text-gray-500">@{f.username}</p>
-                      <p>{f.bio}</p>
-                    </div>
-                    <p className="border-2 rounded-xl p-1 px-3 border-white">
-                      <Button onClick={(e) => handleFollowUnfollow(e, f.id, f)}>
-                        Following
-                      </Button>
-                    </p>
-                  </div>
-                </>
-              );
-            })}
+      {user && (
+        <div className="p-5 flex gap-2 flex-col">
+          <div className="flex">
+            <Button
+              variant={"link"}
+              className={`w-1/2 text-center text-xl ${
+                follower ? "border-b-2 border-primary" : ""
+              }`}
+              onClick={() => {
+                setFollower(true), setFollowing(false);
+              }}>
+              Followers
+            </Button>
+            <Button
+              variant={"link"}
+              className={`w-1/2 text-center text-xl ${
+                following ? "border-b-2 border-primary" : ""
+              }`}
+              onClick={() => {
+                setFollowing(true), setFollower(false);
+              }}>
+              Following
+            </Button>
           </div>
-        )}
-      </div>
+          {follower && (
+            <div>
+              {followers?.map((f) => {
+                const isMeFollowingThem = followings.some((u) => u.id === f.id);
+                return (
+                  <>
+                    <div className="flex items-center gap-1 my-2">
+                      <img
+                        className="w-15 h-15 rounded-full border-5 border-primary-foreground"
+                        src={f.avatar}
+                        alt=""
+                      />
+                      <div className="flex flex-col w-full">
+                        <p className=" w-full">{f.name}</p>
+                        <p className="text-gray-500">@{f.username}</p>
+                        <p>{f.bio}</p>
+                      </div>
+                      <p className="border-2 rounded-xl ">
+                        <Button
+                          onClick={(e) => handleFollowUnfollow(e, f.id, f)}>
+                          {isMeFollowingThem ? "Following" : "Follow"}
+                        </Button>
+                      </p>
+                    </div>
+                  </>
+                );
+              })}
+            </div>
+          )}
+
+          {following && (
+            <div>
+              {followings?.map((f) => {
+                return (
+                  <>
+                    <div className="flex items-center gap-1 my-2">
+                      <img
+                        className="w-15 h-15 rounded-full border-5 border-primary-foreground"
+                        src={f.avatar}
+                        alt=""
+                      />
+                      <div className="flex flex-col w-full">
+                        <p className=" w-full">{f.name}</p>
+                        <p className="text-gray-500">@{f.username}</p>
+                        <p>{f.bio}</p>
+                      </div>
+                      <p className="border-2 rounded-xl">
+                        <Button
+                          onClick={(e) => handleFollowUnfollow(e, f.id, f)}>
+                          Following
+                        </Button>
+                      </p>
+                    </div>
+                  </>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 }

@@ -1,14 +1,10 @@
 import type { QueryParams } from "@/types/types";
-import axios from "axios";
+import api from "../api";
+import { data } from "react-router-dom";
 
 export async function getRepliesByThreadId(queryparams: QueryParams) {
-  const params = queryparams;
   try {
-    const response = await axios({
-      method: "get",
-      url: "http://localhost:3000/api/v1/reply",
-      params,
-    });
+    const response = await api.get("/reply", { params: queryparams });
     console.log(response.data);
 
     return response.data.data.replies;
@@ -18,19 +14,10 @@ export async function getRepliesByThreadId(queryparams: QueryParams) {
 }
 
 export async function postReply(queryparams: QueryParams, formdata: FormData) {
-  const params = queryparams;
-  const token = localStorage.getItem("token");
-
   try {
-    const response = await axios({
-      method: "post",
-      url: "http://localhost:3000/api/v1/reply",
-      params,
+    const response = await api.post("/reply", {
+      params: queryparams,
       data: formdata,
-      withCredentials: true,
-      headers: {
-        token,
-      },
     });
     console.log(response.data);
 

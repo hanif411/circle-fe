@@ -4,6 +4,7 @@ import { Button } from "../components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "../components/ui/dialog";
@@ -14,6 +15,7 @@ import { useThreads } from "@/hooks/useThreads";
 import { Spinner } from "../components/ui/spinner";
 import { House, ImagePlus } from "lucide-react";
 import { postThread } from "@/services/threads/api";
+import { useScrollPosition } from "@/hooks/useScrollPosition";
 
 function HomeView() {
   const [selectFile, setSelectFile] = useState<File | null>(null);
@@ -24,6 +26,7 @@ function HomeView() {
   const [isPosting, setIsPosting] = useState(false);
   const input = useRef<HTMLInputElement>(null);
 
+  useScrollPosition("home_scroll");
   const handleSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === null) {
       setSelectFile(null);
@@ -74,9 +77,7 @@ function HomeView() {
                     className="w-8 h-8 rounded-full "
                   />
                   <div className="flex items-center w-full">
-                    <p className=" w-full">What Happening?!...</p>
-                    <p className="w-full"></p>
-                    <p className="w-full"></p>
+                    <p className=" w-full text-start">What Happening?!...</p>
                     <p className="inline-flex items-center justify-center h-7 p-2 bg-primary text-primary-foreground rounded-md">
                       Post
                     </p>
@@ -85,7 +86,9 @@ function HomeView() {
               </button>
             </DialogTrigger>
             <DialogContent className="">
-              <DialogTitle></DialogTitle>
+              <DialogHeader>
+                <DialogTitle>Post Threads</DialogTitle>
+              </DialogHeader>
               <form onSubmit={handleSubmit}>
                 <div className="grid gap-4 mt-5">
                   <div className="flex gap-4">
@@ -107,6 +110,9 @@ function HomeView() {
                   </div>
                 </div>
                 <div className="flex mt-4 justify-end items-center gap-4">
+                  {selectFile && (
+                    <img className="" src={URL.createObjectURL(selectFile)} />
+                  )}
                   <ImagePlus onClick={() => input.current?.click()} />
                   <Input
                     type="file"

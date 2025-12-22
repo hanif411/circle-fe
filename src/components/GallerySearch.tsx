@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { getThreadByLogin } from "@/services/threads/api";
+import { getThreadByUserId } from "@/services/threads/api";
 import type { ThreadType } from "@/types/types";
 import { useEffect, useState } from "react";
 import {
@@ -9,13 +9,15 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
+import { useParams } from "react-router-dom";
 
-function Gallery() {
+function GallerySearch() {
+  const { id } = useParams();
   const [threads, setThreads] = useState<ThreadType[]>([]);
 
   useEffect(() => {
     const fetchGallery = async () => {
-      const result = await getThreadByLogin();
+      const result = await getThreadByUserId(parseFloat(id!));
       setThreads(result);
       console.log(result);
     };
@@ -82,4 +84,4 @@ function Gallery() {
   );
 }
 
-export default Gallery;
+export default GallerySearch;

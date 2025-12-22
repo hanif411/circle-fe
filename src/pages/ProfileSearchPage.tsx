@@ -2,8 +2,9 @@ import Sidebar from "@/components/Sidebar";
 import ProfileDetail from "@/layouts/ProfileDetail";
 import ProfileRight from "@/components/Suggested";
 import BottomNavigation from "@/components/BottomNavigation";
+import ProfileSearch from "@/layouts/ProfileSearch";
 
-function ProfileDetailpage() {
+function ProfileSearchpage() {
   return (
     <>
       <div className="flex pt-5 ">
@@ -11,7 +12,7 @@ function ProfileDetailpage() {
           <Sidebar />
         </div>
         <div className="xl:w-4/7 w-full">
-          <ProfileDetail />
+          <ProfileSearch />
         </div>
         <div className="xl:w-2/7 hidden xl:flex">
           <ProfileRight />
@@ -25,4 +26,4 @@ function ProfileDetailpage() {
   );
 }
 
-export default ProfileDetailpage;
+export default ProfileSearchpage;

@@ -35,6 +35,7 @@ export interface ThreadType {
   id: number;
   content: string;
   image?: string;
+  media_type?: "image" | "video" | null;
   likes?: number;
   replies?: number;
   user: UserType;

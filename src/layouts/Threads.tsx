@@ -28,7 +28,8 @@ function Threads() {
       tweet_id: threadId,
     };
 
-    try {await createLike(dataLike);
+    try {
+      await createLike(dataLike);
     } catch (error) {
       setError("invalid like");
     }
@@ -38,12 +39,7 @@ function Threads() {
     <div className="flex flex-col gap-2">
       {allThreads?.map((t) => {
         return (
-          <div
-            className=" flex flex-col border-t p-5 gap-2"
-            key={t.id}
-            onClick={() => {
-              navigate(`/thread/${t.id}`);
-            }}>
+          <div className=" flex flex-col border-t p-5 gap-2" key={t.id}>
             <div className="flex gap-2 items-center px-2">
               {t.user.profile_picture && (
                 <img
@@ -58,11 +54,26 @@ function Threads() {
               )}
             </div>
             <div>
-              {t.image && <img src={t.image} className="rounded-sm"></img>}
-              <h1 className="p-2">{t.content}</h1>
+              {t.image && t.media_type === "image" && (
+                <img src={t.image} className="rounded-sm"></img>
+              )}
+              {t.image && t.media_type === "video" && (
+                <video controls src={t.image} className="w-full h-96" />
+              )}
+              <h1
+                className="p-2"
+                onClick={() => {
+                  navigate(`/thread/${t.id}`);
+                }}>
+                {t.content}
+              </h1>
             </div>
             {error && <p>{error}</p>}
-            <div className="flex gap-4 px-2">
+            <div
+              className="flex gap-4 px-2"
+              onClick={() => {
+                navigate(`/thread/${t.id}`);
+              }}>
               <button onClick={(e) => handleLike(e, t.id)} type="button">
                 <Heart
                   style={{

@@ -3,11 +3,12 @@ import { Heart, MessageCircleMore } from "lucide-react";
 import { useThreads } from "@/hooks/useThreads";
 import { useAuth } from "@/hooks/useAuth";
 import type { ThreadType } from "@/types/types";
-import { getThreadByLogin } from "@/services/threads/api";
-import { useNavigate } from "react-router-dom";
+import { getThreadByUserId } from "@/services/threads/api";
+import { useNavigate, useParams } from "react-router-dom";
 
-function ThreadUser() {
+function ThreadSearch() {
   const { createLike, thread: globalThreads } = useThreads();
+  const { id } = useParams();
   const navigate = useNavigate();
   const [allThreads, setAllThreads] = useState<ThreadType[]>([]);
 
@@ -34,7 +35,7 @@ function ThreadUser() {
 
   useEffect(() => {
     const fetchThread = async () => {
-      const result = await getThreadByLogin();
+      const result = await getThreadByUserId(parseInt(id!, 10));
       setAllThreads(result);
     };
     fetchThread();
@@ -112,4 +113,4 @@ function ThreadUser() {
   );
 }
 
-export default ThreadUser;
+export default ThreadSearch;

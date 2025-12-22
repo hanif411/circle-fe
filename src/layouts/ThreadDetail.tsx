@@ -6,6 +6,7 @@ import { Spinner } from "../components/ui/spinner";
 import {
   Dialog,
   DialogContent,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "../components/ui/dialog";
@@ -15,6 +16,7 @@ import { Button } from "../components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import Replies from "../features/reply/components/Replies";
 import type { QueryParams, ReplyType, ThreadType } from "@/types/types";
+import BottomNavigation from "@/components/BottomNavigation";
 
 function ThreadDetail() {
   const [thread, setThread] = useState<ThreadType | null>(null);
@@ -86,8 +88,10 @@ function ThreadDetail() {
 
   return (
     <div className="">
-      <button className="flex gap-2 mb-2 p-2" onClick={() => navigate("/")}>
-        <CircleArrowLeft /> <p> Status</p>
+      <button
+        className="flex gap-2 mb-2 p-2"
+        onClick={() => window.history.back()}>
+        <CircleArrowLeft />
       </button>
       <div className=" p-4">
         <div className="flex gap-2 items-center">
@@ -105,8 +109,13 @@ function ThreadDetail() {
             )}
           </div>
         </div>
+        {thread?.image && thread?.media_type === "image" && (
+          <img src={thread?.image} className="rounded-sm"></img>
+        )}
+        {thread?.image && thread?.media_type === "video" && (
+          <video controls src={thread?.image} className="w-full h-96" />
+        )}{" "}
         <h1>{thread?.content}</h1>
-        {thread?.image && <img src={thread.image} />}
         <div className="flex gap-4 mt-5 text-gray-500">
           <Heart />
           <h1>{thread?.likes}</h1>
@@ -127,9 +136,7 @@ function ThreadDetail() {
                     className="w-8 h-8 rounded-full "
                   />
                   <div className="flex w-full items-center">
-                    <p className="w-full">Type Your Reply</p>
-                    <p className="w-full"></p>
-                    <p className="w-full"></p>
+                    <p className="w-full text-start px-2">Type Your Reply</p>
                     <p className="inline-flex items-center justify-center h-7 p-2 bg-primary text-primary-foreground rounded-md">
                       Reply
                     </p>
@@ -138,7 +145,9 @@ function ThreadDetail() {
               </button>
             </DialogTrigger>
             <DialogContent className="">
-              <DialogTitle></DialogTitle>
+              <DialogHeader>
+                <DialogTitle>Post Reply</DialogTitle>
+              </DialogHeader>
               <form onSubmit={handleSubmit}>
                 <div className="grid gap-4 mt-5">
                   <div className="flex gap-4">
@@ -179,6 +188,10 @@ function ThreadDetail() {
       </h1>
       <div>
         <Replies />
+      </div>
+
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50">
+        <BottomNavigation />
       </div>
     </div>
   );
