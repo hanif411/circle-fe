@@ -1,9 +1,8 @@
 import type React from "react";
 import { ThreadContext } from "./ThreadContext";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // import { io, Socket } from "socket.io-client";
 import type {
-  LikeEventData,
   LikeType,
   QueryParams,
   ReplyType,
