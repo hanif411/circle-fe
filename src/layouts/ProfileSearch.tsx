@@ -1,6 +1,4 @@
-import ThreadUser from "../components/ThreadUser";
 import { useEffect, useState } from "react";
-import Gallery from "@/components/Gallery";
 import { Button } from "@/components/ui/button";
 import { CircleArrowLeft, CircleUserRound } from "lucide-react";
 import type { User } from "@/context/authContext";

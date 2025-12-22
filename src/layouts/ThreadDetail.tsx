@@ -1,7 +1,7 @@
 import { useThreads } from "@/hooks/useThreads";
 import { CircleArrowLeft, Heart, ImagePlus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { Spinner } from "../components/ui/spinner";
 import {
   Dialog,
@@ -25,12 +25,14 @@ function ThreadDetail() {
   const { getThreadId } = useThreads();
   const { error, loading } = useThreads();
   const { user } = useAuth();
-  const navigate = useNavigate();
   const { createReply } = useThreads();
   const [isReplies, setIsReplies] = useState(false);
   const { id } = useParams<{ id: string }>();
   const thread_id = parseInt(id!, 10);
   const input = useRef<HTMLInputElement>(null);
+
+  const repli = {replies, isReplies}
+  repli
 
   const [content, setContent] = useState<string>("");
   const [selectFile, setSelectFile] = useState<File | null>(null);

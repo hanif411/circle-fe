@@ -1,5 +1,4 @@
 import Sidebar from "@/components/Sidebar";
-import ProfileDetail from "@/layouts/ProfileDetail";
 import ProfileRight from "@/components/Suggested";
 import BottomNavigation from "@/components/BottomNavigation";
 import ProfileSearch from "@/layouts/ProfileSearch";

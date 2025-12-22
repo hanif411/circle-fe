@@ -33,7 +33,7 @@ function FollowDetail() {
     const updateFollow = (event: {
       data: { follower_id: number; following_id: number; isFollowing: boolean };
     }) => {
-      const { follower_id, following_id, isFollowing } = event.data;
+      const { follower_id, following_id } = event.data;
 
       if (follower_id === user?.id) {
         fetchFollowers();

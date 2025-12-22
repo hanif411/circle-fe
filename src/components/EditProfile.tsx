@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { User } from "@/context/authContext";
-import { editUser, getUserById, getUserByLogin } from "@/services/auth/api";
+import { editUser, getUserByLogin } from "@/services/auth/api";
 import { ImagePlus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Spinner } from "./ui/spinner";

@@ -19,6 +19,7 @@ export function ThreadProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(false);
   const [reply, setReply] = useState<ReplyType>();
 
+  reply;
   useEffect(() => {
     getThreads();
     const socket: Socket = io("http://localhost:3000");
