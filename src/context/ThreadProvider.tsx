@@ -1,7 +1,7 @@
 import type React from "react";
 import { ThreadContext } from "./ThreadContext";
 import { useEffect, useState } from "react";
-import { io, Socket } from "socket.io-client";
+// import { io, Socket } from "socket.io-client";
 import type {
   LikeEventData,
   LikeType,
@@ -20,54 +20,54 @@ export function ThreadProvider({ children }: { children: React.ReactNode }) {
   const [reply, setReply] = useState<ReplyType>();
 
   reply;
-  useEffect(() => {
-    getThreads();
-    const socket: Socket = io("https://be-circle-theta.vercel.app");
+  // useEffect(() => {
+  //   getThreads();
+  //   const socket: Socket = io("https://be-circle-theta.vercel.app");
 
-    socket.on("connect", () => {
-      console.log("ThreadProvider: Socket.IO connected.");
-    });
+  //   socket.on("connect", () => {
+  //     console.log("ThreadProvider: Socket.IO connected.");
+  //   });
 
-    socket.on(
-      "new_thread",
-      (eventData: { data: ThreadType; message: string }) => {
-        console.log("ThreadProvider: Received new thread via Socket.IO.");
-        setThread((prev) => [eventData.data, ...prev]);
-      }
-    );
+  //   socket.on(
+  //     "new_thread",
+  //     (eventData: { data: ThreadType; message: string }) => {
+  //       console.log("ThreadProvider: Received new thread via Socket.IO.");
+  //       setThread((prev) => [eventData.data, ...prev]);
+  //     }
+  //   );
 
-    socket.on(
-      "like_update",
-      (eventData: { data: LikeEventData; message: string }) => {
-        console.log("like: Received new thread via Socket.IO.");
-        const { tweet_id, status } = eventData.data;
-        updateThreadLikeStatus(tweet_id, status);
-      }
-    );
+  //   socket.on(
+  //     "like_update",
+  //     (eventData: { data: LikeEventData; message: string }) => {
+  //       console.log("like: Received new thread via Socket.IO.");
+  //       const { tweet_id, status } = eventData.data;
+  //       updateThreadLikeStatus(tweet_id, status);
+  //     }
+  //   );
 
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
-  const updateThreadLikeStatus = (
-    threadId: number,
-    status: "like" | "unlike"
-  ) => {
-    setThread((prevThreads) =>
-      prevThreads.map((t) => {
-        if (t.id === threadId) {
-          const isLiking = status === "like";
-          return {
-            ...t,
-            likes: Math.max(0, t.likes! + (isLiking ? 1 : -1)),
-            islike: isLiking,
-          };
-        }
-        return t;
-      })
-    );
-  };
+  // const updateThreadLikeStatus = (
+  //   threadId: number,
+  //   status: "like" | "unlike"
+  // ) => {
+  //   setThread((prevThreads) =>
+  //     prevThreads.map((t) => {
+  //       if (t.id === threadId) {
+  //         const isLiking = status === "like";
+  //         return {
+  //           ...t,
+  //           likes: Math.max(0, t.likes! + (isLiking ? 1 : -1)),
+  //           islike: isLiking,
+  //         };
+  //       }
+  //       return t;
+  //     })
+  //   );
+  // };
 
   const getThreadId = async (id: number) => {
     try {
