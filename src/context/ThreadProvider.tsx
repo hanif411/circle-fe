@@ -1,6 +1,6 @@
 import type React from "react";
 import { ThreadContext } from "./ThreadContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { io, Socket } from "socket.io-client";
 import type {
   LikeType,
@@ -68,13 +68,17 @@ export function ThreadProvider({ children }: { children: React.ReactNode }) {
   //   );
   // };
 
+  useEffect(() => {
+    getThreads();
+  }, []);
+
   const getThreadId = async (id: number) => {
     try {
       setLoading(true);
       const result = await getThreadById(id);
       console.log(result);
 
-      // setThread(result);
+      setThread(result);
       return result;
     } catch (error) {
       setError("invalid get thread id");
