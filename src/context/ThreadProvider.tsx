@@ -22,7 +22,7 @@ export function ThreadProvider({ children }: { children: React.ReactNode }) {
   reply;
   useEffect(() => {
     getThreads();
-    const socket: Socket = io("http://localhost:3000");
+    const socket: Socket = io("https://be-circle-theta.vercel.app");
 
     socket.on("connect", () => {
       console.log("ThreadProvider: Socket.IO connected.");
