@@ -9,10 +9,10 @@
 
 ## 🌟 Executive Summary
 
-Circle adalah platform media sosial yang dirancang untuk interaksi cepat dan dinamis. Fokus utama aplikasi ini adalah memberikan pengalaman pengguna yang mulus dalam berbagi konten (threads) dan berinteraksi secara instan.
+Circle is a social media platform designed for fast, dynamic interactions. The app's primary focus is on providing a seamless user experience for sharing content (threads) and interacting instantly.
 
-- **Interaction:** Update konten secara realtime dengan web socket.
-- **Experience:** UI modern yang responsif dan intuitif untuk eksplorasi konten.
+- **Interaction:** Update Content realtime using web socket.
+- **Experience:** UI modern responsif and intuitive for content exploration.
 
 ---
 
