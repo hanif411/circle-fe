@@ -54,14 +54,22 @@ This frontend is built with a focus on state management and real-time data synch
    ```
 2. **Install dependencies:**
 
-   ````bash
-   npm install
-     ```
-
-   ````
-
-3. **Run the App**
-
    ```bash
-   npm run dev
-   ```
+   npm install
+    ```
+
+3. **Configure Environment Variables:**
+
+    Create a .env file based on your database and Redis credentials.
+
+    ```bash
+    DATABASE_URL=  Your database postgres
+    JWT_SECRETKEY= Your jwt secret key
+    ```
+
+
+4. **Run the App**
+
+    ```bash
+    npm run dev
+    ```
